@@ -9,15 +9,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.avensys.rts.languagesservice.constant.MessageConstants;
 import com.avensys.rts.languagesservice.payloadnewrequest.LanguagesRequestDTO;
@@ -30,6 +22,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
+@RequestMapping("/api/languages")
 public class LanguagesController {
 
 	private final Logger log = LoggerFactory.getLogger(LanguagesController.class);
@@ -44,7 +37,7 @@ public class LanguagesController {
 		this.messageSource = messageSource;
 	}
 
-	@PostMapping("/languages")
+	@PostMapping("")
 	public ResponseEntity<Object> createLanguages(@Valid @RequestBody LanguagesRequestDTO languagesRequestDTO,
 			@RequestHeader(name = "Authorization") String token) {
 		log.info("Create Languages : Controller ");
@@ -56,7 +49,7 @@ public class LanguagesController {
 				messageSource.getMessage(MessageConstants.MESSAGE_CREATED, null, LocaleContextHolder.getLocale()));
 	}
 
-	@GetMapping("/languages/entity/{entityType}/{entityId}")
+	@GetMapping("/entity/{entityType}/{entityId}")
 	public ResponseEntity<Object> getLanguagesByEntityTypeAndEntityId(@PathVariable String entityType,
 			@PathVariable Integer entityId) {
 		log.info("Get Languages by entity type and entity id : Controller ");
@@ -65,7 +58,7 @@ public class LanguagesController {
 				messageSource.getMessage(MessageConstants.MESSAGE_SUCCESS, null, LocaleContextHolder.getLocale()));
 	}
 
-	@DeleteMapping("/languages/{id}")
+	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deleteLanguages(@PathVariable Integer id) {
 		log.info("Delete Languages : Controller ");
 		languagesServiceImpl.deleteLanguages(id);
@@ -73,7 +66,7 @@ public class LanguagesController {
 				messageSource.getMessage(MessageConstants.MESSAGE_SUCCESS, null, LocaleContextHolder.getLocale()));
 	}
 
-	@PutMapping("/languages/{id}")
+	@PutMapping("/{id}")
 	public ResponseEntity<Object> updateLanguages(@PathVariable Integer id,
 			@Valid @RequestBody LanguagesRequestDTO languagesRequestDTO,
 			@RequestHeader(name = "Authorization") String token) {
@@ -92,7 +85,7 @@ public class LanguagesController {
 	 * @param entityId
 	 * @return
 	 */
-	@DeleteMapping("/languages/entity/{entityType}/{entityId}")
+	@DeleteMapping("/entity/{entityType}/{entityId}")
 	public ResponseEntity<Object> deleteLanguagesByEntityTypeAndEntityId(@PathVariable String entityType,
 			@PathVariable Integer entityId) {
 		log.info("Delete Languages by entity type and entity id : Controller ");

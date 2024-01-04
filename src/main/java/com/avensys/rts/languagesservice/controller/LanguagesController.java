@@ -37,7 +37,7 @@ public class LanguagesController {
 		this.messageSource = messageSource;
 	}
 
-	@PostMapping("")
+	@PostMapping("/add")
 	public ResponseEntity<Object> createLanguages(@Valid @RequestBody LanguagesRequestDTO languagesRequestDTO,
 			@RequestHeader(name = "Authorization") String token) {
 		log.info("Create Languages : Controller ");

@@ -1,7 +1,7 @@
 package com.avensys.rts.languagesservice.controller;
 
+import com.avensys.rts.languagesservice.payloadnewrequest.LanguagesListRequestDTO;
 import org.slf4j.Logger;
-
 
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +46,20 @@ public class LanguagesController {
 		languagesRequestDTO.setUpdatedBy(userId);
 		LanguagesResponseDTO languagesResponseDTO = languagesServiceImpl.createLanguages(languagesRequestDTO);
 		return ResponseUtil.generateSuccessResponse(languagesResponseDTO, HttpStatus.CREATED,
+				messageSource.getMessage(MessageConstants.MESSAGE_CREATED, null, LocaleContextHolder.getLocale()));
+	}
+
+	@PostMapping("/add/list")
+	public ResponseEntity<Object> createLanguagesList(@RequestBody LanguagesListRequestDTO languagesListRequestDTO,
+			@RequestHeader(name = "Authorization") String token) {
+		log.info("Create Languages : Controller ");
+		Long userId = jwtUtil.getUserId(token);
+		languagesListRequestDTO.getLanguagesList().forEach(languagesRequestDTO -> {
+			languagesRequestDTO.setCreatedBy(userId);
+			languagesRequestDTO.setUpdatedBy(userId);
+		});
+		languagesServiceImpl.createLanguagesList(languagesListRequestDTO);
+		return ResponseUtil.generateSuccessResponse(null, HttpStatus.CREATED,
 				messageSource.getMessage(MessageConstants.MESSAGE_CREATED, null, LocaleContextHolder.getLocale()));
 	}
 

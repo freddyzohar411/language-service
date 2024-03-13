@@ -4,6 +4,7 @@ import java.util.List;
 
 import java.util.Optional;
 
+import com.avensys.rts.languagesservice.payloadnewrequest.LanguagesListRequestDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,8 +69,13 @@ public class LanguagesServiceImpl implements LanguagesService {
 				.mapClientBodyToClass(formSubmissionResponse.getData(), FormSubmissionsResponseDTO.class);
 
 		savedLanguagesEntity.setFormSubmissionId(formSubmissionData.getId());
-
+		languagesRepository.save(savedLanguagesEntity);
 		return languagesEntityToLanguagesResponseDTO(savedLanguagesEntity);
+	}
+
+	@Override
+	public void createLanguagesList(LanguagesListRequestDTO languagesListRequestDTO) {
+		languagesListRequestDTO.getLanguagesList().forEach(this::createLanguages);
 	}
 
 	@Override
